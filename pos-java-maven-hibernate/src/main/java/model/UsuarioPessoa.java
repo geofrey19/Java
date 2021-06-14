@@ -1,11 +1,22 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name ="UsuarioPessoa.todos", query ="Select u from UsuarioPessoa u"),
+	@NamedQuery(name = "UsuarioPessoa.buscaPorNome", query = "select u from UsuarioPessoa u where u.nome = :nome")
+})
 public class UsuarioPessoa {
 	
 	@Id
@@ -18,6 +29,9 @@ public class UsuarioPessoa {
 	private String login;
 	private String senha;
 	private int idade;
+	
+	@OneToMany(mappedBy = "usuarioPessoa", fetch = FetchType.EAGER)
+	private List<TelefoneUser> telefoneUsres;
 	
 	public int getIdade() {
 		return idade;
@@ -62,6 +76,12 @@ public class UsuarioPessoa {
 		this.senha = senha;
 	}
 	
+	public List<TelefoneUser> getTelefoneUsres() {
+		return telefoneUsres;
+	}
+	public void setTelefoneUsres(List<TelefoneUser> telefoneUsres) {
+		this.telefoneUsres = telefoneUsres;
+	}
 	@Override
 	public String toString() {
 		return "UsuarioPessoa [id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + ", email=" + email
